@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Check</title>
+  </head>
+  <body>
+    <button onclick="postInventory()">Post inventory</button>
+    <button onclick="editInventory()">edit inventory</button>
+    <button onclick="postAction()">Post action</button>
+    <a href="http://127.0.0.1:8000/actions/export/excel" download>Save Action Excel</a>
+    <a href="http://127.0.0.1:8000/report/export/excel" download>Save Report Excel</a>
+    <button onclick="createCredit()">Create Kredit</button>
+    <button onclick="putCredit()">Put duty</button>
+    <button onclick="refun_action()">REFUND ACTION</button>
+
+    <script>
+      postInventory = () => {
+        fetch("http://127.0.0.1:8000/inventory/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            barcode: 2345678,
+            product_name: "Behruz",
+            quantity: 10,
+            remained: 10,
+            sales: 0,
+            del_price: "100.000",
+            selling_price: "150.000",
+            body_price: "50.000",
+            empty: "empty",
+            birlik: "dona",
+            empty_number: 0,
+          }),
+        });
+      };
+      editInventory = () => {
+        fetch("http://127.0.0.1:8000/inventory/1", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            barcode: 1000,
+            product_name: "Test",
+            quantity: 10,
+            remained: 10,
+            sales: 0,
+            del_price: "100.000",
+            selling_price: "150.000",
+            body_price: "50.000",
+            empty: "empty",
+            empty_number: 0,
+          }),
+        });
+      };
+      postAction = () => {
+        fetch("http://127.0.0.1:8000/action/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+          barcode: "1000",
+            product_name: "Test",
+            quantity: 1,
+            selling_price: "1000.000",
+            paid: "0.000",
+            del_price: "900.000",
+            body_price: "100.000",
+            empty: "empty",
+            empty_number: 0
+          }),
+        });
+      };
+
+      putCredit = () => {
+        fetch("http://127.0.0.1:8000/duty/1", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            client: "behruz",
+            phone_number: "+992929851515",
+            barcode: "1000",
+            product_name: "Test",
+            paid: "0.000",
+            is_duty: true
+          }),
+        });
+      };
+      createCredit = () => {
+        fetch("http://127.0.0.1:8000/kredit/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: 1,
+            client: "behruz",
+            phone_number: "+992929851515",
+            barcode: 2345678,
+            product_name: "Ноутбук",
+            quantity: 10,
+            selling_price: "123.000",
+            created: "2023-01-08T13:22:28.138880Z",
+            paid: "1221.000",
+            del_price: "123.000",
+            body_price: "122.000",
+            birlik: "dona",
+            c: true,
+            final_price: "10000.00"
+          }),
+        });
+      }
+      getAllInventory = () => {
+        fetch("http://127.0.0.1:8000/inventory/all")
+        .then(response => response.json())
+	      .then(data => document.write(data[0].product_name))
+      }
+
+      getStoreById = () => {
+        fetch("http://127.0.0.1:8000/store/1", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => response.json())
+	      .then(data => console.log(data))
+      }
+      refun_action = () =>{
+        fetch("http://127.0.0.1:8000/refund", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: 2,
+            barcode: 1000,
+            product_name: "mih",
+            quantity: 23,
+          }),
+        });
+      }
+    </script>
+  </body>
+</html>
